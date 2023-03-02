@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExerciseMicroservices.Shared.Dtos
 {
-    public class NoContent
+    public class NoContentDto
     {
     }
 }
