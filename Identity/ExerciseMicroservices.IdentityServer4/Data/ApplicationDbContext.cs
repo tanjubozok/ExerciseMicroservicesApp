@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using ExerciseMicroservices.IdentityServer4.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ExerciseMicroservices.IdentityServer4.Models;
 
 namespace ExerciseMicroservices.IdentityServer4.Data
 {

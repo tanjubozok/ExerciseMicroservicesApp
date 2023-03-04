@@ -1,5 +1,4 @@
 ﻿using ExerciseMicroservices.Services.Catalog.Dtos.CategoryDtos;
-using ExerciseMicroservices.Services.Catalog.Models;
 using ExerciseMicroservices.Shared.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;

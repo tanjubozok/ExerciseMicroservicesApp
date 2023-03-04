@@ -2,8 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using ExerciseMicroservices.IdentityServer4.Data;
+using ExerciseMicroservices.IdentityServer4.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -37,22 +40,25 @@ namespace ExerciseMicroservices.IdentityServer4
 
             try
             {
-                var seed = args.Contains("/seed");
-                if (seed)
-                {
-                    args = args.Except(new[] { "/seed" }).ToArray();
-                }
-
                 var host = CreateHostBuilder(args).Build();
 
-                if (seed)
+                using (var scope = host.Services.CreateScope())
                 {
-                    Log.Information("Seeding database...");
-                    var config = host.Services.GetRequiredService<IConfiguration>();
-                    var connectionString = config.GetConnectionString("DefaultConnection");
-                    SeedData.EnsureSeedData(connectionString);
-                    Log.Information("Done seeding database.");
-                    return 0;
+                    var serviceProvider = scope.ServiceProvider;
+                    var appDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+                    appDbContext.Database.Migrate();
+
+                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                    if (!userManager.Users.Any())
+                    {
+                        var applicationUser = new ApplicationUser()
+                        {
+                            UserName = "jhondoe",
+                            Email = "jhondoe@localhost",
+                            City = "Antalya"
+                        };
+                        userManager.CreateAsync(applicationUser, "Password123*").Wait();
+                    }
                 }
 
                 Log.Information("Starting host...");
