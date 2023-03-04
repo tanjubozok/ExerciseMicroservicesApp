@@ -30,10 +30,10 @@ namespace ExerciseMicroservices.Services.Catalog.Services
             return ResponseDto<List<CategoryDto>>.Success(categoryDto, StatusCodes.Status200OK);
         }
 
-        public async Task<ResponseDto<CategoryDto>> CreateAsync(Category category)
+        public async Task<ResponseDto<CategoryDto>> CreateAsync(CategoryDto categoryDto)
         {
+            var category = _mapper.Map<Category>(categoryDto);
             await _categoryCollection.InsertOneAsync(category);
-            var categoryDto = _mapper.Map<CategoryDto>(category);
             return ResponseDto<CategoryDto>.Success(categoryDto, StatusCodes.Status201Created);
         }
 
