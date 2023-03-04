@@ -82,7 +82,7 @@ namespace ExerciseMicroservices.Services.Catalog.Services
 
         public async Task<ResponseDto<NoContentDto>> DeleteAsync(string id)
         {
-            var result = await _courseCollection.DeleteOneAsync(id);
+            var result = await _courseCollection.DeleteOneAsync(x => x.Id == id);
             if (result is null)
                 return ResponseDto<NoContentDto>.Fail("Hata oluştu", StatusCodes.Status400BadRequest);
             return ResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent);
